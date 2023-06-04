@@ -1,0 +1,4 @@
+/certbot
+/letsencypt/certbot
+.env
+/conf/nginx.conf
