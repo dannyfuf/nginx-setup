@@ -151,43 +151,53 @@ def generateHosts(current):
 
 current = readCurrentHosts()
 while True:
-  print("1. Ingresar DNS")
-  print("2. Mostrar hosts actuales")
-  print("3. Añadir redirección")
-  print("4. Eliminar redirección")
-  print("5. Limpiar redirecciones")
-  print("6. Salir")
-  option = input("Ingresa opción: ")
-  
+  print("1. Set Host Name")
+  print("2. Show Current Locations")
+  print("3. Add new Location")
+  print("4. Delete Location")
+  print("5. Clean Locations")
+  print("6. Exit")
+  option = input("Enter an option: ")
+  save_flag = False
+
   if option == "1":
-    host_name = input("Ingresa el nombre del host: ")
+    host_name = input("Enter Host Name: ")
     current["host_name"] = host_name
-    print("Se ha cambiado el nombre del host")
+    print("The host name has been set")
     print(f"{current['host_name']}\n")
+    save_flag = True
 
   if option == "2":
     printCurrentHosts(current)
   
   if option == "3":
-    slug = input("Ingresa el slug: ")
-    port = input("Ingresa el puerto: ")
-    current["locations"][slug] = port
-    print("Se ha añadido la redirección")
-    print(f"{slug}: {current['locations'][slug]}\n")
+    location = input("Enter Location: ")
+    port = input("Enter Port Number: ")
+    current["locations"][location] = port
+    print("The location has been added")
+    print(f"{location}: {current['locations'][location]}\n")
+    save_flag = True
 
   if option == "4":
-    slug = input("Ingresa el slug: ")
-    del current["locations"][slug]
-    print("Se ha eliminado la redirección")
-    print(f"{slug}: {current['locations'][slug]}\n")
+    location = input("Enter location: ")
+    del current["locations"][location]
+    print("The location has been deleted")
+    print(f"{location}: {current['locations'][location]}\n")
+    save_flag = True
 
   if option == "5":
     with open("conf/nginx.conf", "w") as f:
       f.write("")
 
-    print("Se han eliminado todas las redirecciones\n")
+    current["locations"] = {}
+    print("All the Locations has been deleted\n")
+    save_flag = True
 
   if option == "6":
     printCurrentHosts(current)
     generateHosts(current)
     break
+  
+  if save_flag:
+    printCurrentHosts(current)
+    generateHosts(current)
